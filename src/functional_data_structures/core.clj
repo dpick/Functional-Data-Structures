@@ -9,5 +9,14 @@
     (conj coll2 coll1)
     (suffixes (rest coll1) (conj coll2 coll1)))))
 
+; from chap 2
+(defn member [elem tree]
+  (let [root (second tree) left (first tree) right (last tree)]
+    (cond
+      (empty? tree) false
+      (< elem root) (member elem left)
+      (> elem root) (member elem right)
+      :else true)))
+
 (defn -main [& args]
-  (println (suffixes [1 2 3 4])))
+  (println (member 3 [[1 3 4] 7 5])))
