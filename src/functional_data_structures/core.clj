@@ -30,5 +30,14 @@
        (< elem root) (fast-member elem left root)
        :else (fast-member elem right root)))))
 
+; from figure 2.9
+(defn insert [elem tree]
+  (let [root (second tree) left (first tree) right (last tree)]
+    (cond
+      (empty? tree) [nil elem nil]
+      (< elem root) [(insert elem left) root right]
+      (> elem root) [left root (insert elem right)]
+      :else elem)))
+
 (defn -main [& args]
-  (println (fast-member 5 [[nil 2 nil] 3 [nil 4 nil]])))
+  (println (insert 5 [nil 4 nil])))
