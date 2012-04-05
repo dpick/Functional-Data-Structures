@@ -39,5 +39,34 @@
       (> elem root) [left root (insert elem right)]
       :else elem)))
 
+; helper for heap-merge
+(defn rank [node]
+  (if (nil? node)
+    0
+    (first node)))
+
+; helper for heap-merge
+(defn makeT [node]
+  (let [root (first node) left (second node) right (last node)]
+    (if (>= (rank left) (rank right))
+      [(+ 1 (rank right)) root left right]
+      [(+ 1 (rank left)) root right left])))
+
+; from chap 3.1
+(defn heap-merge [h1 h2]
+  (let [rank1 (first h1)
+        root1 (second h1)
+        left1 (nth h1 2)
+        right1 (last h1)
+        rank2 (first h2)
+        root2 (second h2)
+        left2 (nth h2 2)
+        right2 (last h2)]
+        (cond
+          (nil? h1) h2
+          (nil? h2) h1
+          (<= root1 root2) (makeT [root1 left1 (heap-merge right1 h2)])
+          :else (makeT [root2 left2 (heap-merge h1 right2)]))))
+
 (defn -main [& args]
-  (println (insert 5 [nil 4 nil])))
+  (println (heap-merge [1 3 nil nil] [1 4 nil nil])))
